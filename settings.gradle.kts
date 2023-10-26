@@ -56,4 +56,4 @@ if (cacheUrl != null) {
 }
 
 rootProject.name = "ComposePdfViewer"
-include(":app", ":pdfviewer")
+include(":pdfviewer", ":app")
