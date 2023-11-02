@@ -42,8 +42,7 @@ fun PdfViewer(
     allowPinchToZoom: Boolean = true,
 ) {
     val pdfGenerator: PdfBitmapGenerator by remember { mutableStateOf(PdfBitmapGenerator(file)) }
-    val size by remember { mutableStateOf(IntSize(1, 1)) }
-    var parentSize by remember { mutableStateOf(IntSize(0, 0)) }
+    var size by remember { mutableStateOf(IntSize(1, 1)) }
     val state by pdfGenerator.pageCacheFlow.collectAsState(initial = pdfGenerator.cache)
 
     val lazyColumnState = rememberLazyListState()
@@ -68,9 +67,6 @@ fun PdfViewer(
         modifier
             .fillMaxSize()
             .background(Color.White)
-            .onGloballyPositioned {
-                parentSize = it.size
-            }
             .zoomable(
                 state = zoomState,
                 enabled = allowPinchToZoom,
@@ -78,6 +74,9 @@ fun PdfViewer(
     ) {
         LazyColumn(
             modifier = Modifier
+                .onGloballyPositioned { coordinates ->
+                    size = coordinates.size
+                }
                 .fillMaxSize(),
             state = lazyColumnState,
             content = {
