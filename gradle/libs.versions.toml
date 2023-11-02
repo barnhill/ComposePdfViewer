@@ -15,6 +15,7 @@ kotlin = "1.9.10"
 gradleCacheFix = "2.7.1"
 dokka = "1.9.10"
 vanniktech-maven-publish = "0.25.2"
+zoomable = "0.6.2"
 
 [libraries]
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
@@ -29,6 +30,7 @@ androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling
 androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "androidx-compose-ui" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
 dokka-gradle = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
+zoomable = { module = "me.saket.telephoto:zoomable", version.ref = "zoomable" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
