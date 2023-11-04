@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -40,6 +42,12 @@ fun PdfViewer(
     file: File,
     maxScale: Float = 5f, //max scale 5f == 5x zoom
     allowPinchToZoom: Boolean = true,
+    pageDivider: @Composable BoxScope.() -> Unit = {
+        Divider(
+            modifier = Modifier.padding(16.dp),
+            color = MaterialTheme.colorScheme.outlineVariant
+        )
+    },
 ) {
     val pdfGenerator: PdfBitmapGenerator by remember { mutableStateOf(PdfBitmapGenerator(file)) }
     var size by remember { mutableStateOf(IntSize(1, 1)) }
@@ -88,10 +96,7 @@ fun PdfViewer(
                         pageIndex = pageIndex
                     )
 
-                    Divider(
-                        modifier = Modifier.padding(16.dp),
-                        color = Color.Transparent
-                    )
+                    pageDivider()
                 }
             }
         )
