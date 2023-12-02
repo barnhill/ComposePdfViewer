@@ -5,17 +5,17 @@ androidx-appcompat = "1.6.1"
 androidx-compose-ui = "1.5.4"
 androidx-material3 = "1.1.2"
 material = "1.10.0"
-androidx-activity = "1.8.0"
+androidx-activity = "1.8.1"
 androidx-core = "1.12.0"
 androidx-lifecycle = "2.6.2"
 
 #plugins
-android-gradle-plugin = "8.1.2"
+android-gradle-plugin = "8.2.0"
 kotlin = "1.9.10"
 gradleCacheFix = "2.7.1"
 dokka = "1.9.10"
 vanniktech-maven-publish = "0.25.2"
-zoomable = "0.6.2"
+zoomable = "0.7.1"
 
 [libraries]
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
@@ -33,7 +33,6 @@ dokka-gradle = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref
 zoomable = { module = "me.saket.telephoto:zoomable", version.ref = "zoomable" }
 
 [plugins]
-android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
 android-library = { id = "com.android.library", version.ref = "android-gradle-plugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "vanniktech-maven-publish" }

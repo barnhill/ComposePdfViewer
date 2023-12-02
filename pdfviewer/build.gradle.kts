@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.dokka)
 }
 
-version = "1.0.0"
+version = "0.0.1"
 group = "com.pnuema.android"
 
 android {
@@ -57,7 +57,7 @@ dependencies {
     implementation(libs.zoomable)
 }
 
-val dokkaOutputDir = "$buildDir/dokka"
+val dokkaOutputDir = "${layout.buildDirectory}/dokka"
 tasks {
     val sourcesJar by creating(Jar::class) {
         archiveClassifier.set("sources")
