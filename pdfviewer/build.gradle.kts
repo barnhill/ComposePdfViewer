@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.dokka)
 }
 
-version = "0.0.1"
+version = "1.0.0"
 group = "com.pnuema.android"
 
 android {
