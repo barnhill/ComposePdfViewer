@@ -12,7 +12,7 @@ androidx-lifecycle = "2.6.2"
 #plugins
 android-gradle-plugin = "8.2.0"
 kotlin = "1.9.21"
-gradleCacheFix = "2.7.1"
+gradleCacheFix = "3.0"
 dokka = "1.9.10"
 vanniktech-maven-publish = "0.25.3"
 zoomable = "0.7.1"
