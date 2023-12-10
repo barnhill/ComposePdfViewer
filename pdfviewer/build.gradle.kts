@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.dokka)
 }
 
-version = "1.0.0"
+version = "1.0.1"
 group = "com.pnuema.android"
 
 android {
@@ -55,6 +55,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
     implementation(libs.zoomable)
+    debugImplementation(libs.androidx.compose.ui.tooling)
 }
 
 val dokkaOutputDir = "${layout.buildDirectory}/dokka"

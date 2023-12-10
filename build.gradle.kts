@@ -1,5 +1,4 @@
 buildscript {
-    extra["gradleVersion"] = "8.5"
     repositories {
         google()
         mavenCentral()
@@ -17,7 +16,7 @@ plugins {
 
 tasks {
     wrapper {
-        gradleVersion = gradleVersion
+        gradleVersion = "8.5"
         distributionType = Wrapper.DistributionType.BIN
     }
 }
