@@ -42,6 +42,7 @@ fun PdfViewer(
     file: File,
     maxScale: Float = 5f, //max scale 5f == 5x zoom
     allowPinchToZoom: Boolean = true,
+    backgroundColor: Color = Color.White,
     pageDivider: @Composable BoxScope.() -> Unit = {
         Divider(
             modifier = Modifier.padding(16.dp),
@@ -74,7 +75,7 @@ fun PdfViewer(
     Box(
         modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(backgroundColor)
             .zoomable(
                 state = zoomState,
                 enabled = allowPinchToZoom,

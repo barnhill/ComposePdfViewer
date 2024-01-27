@@ -10,7 +10,7 @@ androidx-core = "1.12.0"
 androidx-lifecycle = "2.6.2"
 
 #plugins
-android-gradle-plugin = "8.2.0"
+android-gradle-plugin = "8.2.2"
 kotlin = "1.9.21"
 gradleCacheFix = "3.0"
 dokka = "1.9.10"
