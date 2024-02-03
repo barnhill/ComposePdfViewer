@@ -43,7 +43,10 @@ import kotlin.math.min
 fun PdfViewerFromUrl(
     modifier: Modifier = Modifier,
     url: String,
-    fileRetriever: PDFFileRetriever = DefaultFileRetriever(targetTempFile = File(LocalContext.current.cacheDir, "temp.pdf")),
+    fileRetriever: PDFFileRetriever = DefaultFileRetriever(
+        context = LocalContext.current,
+        targetTempFile = File(LocalContext.current.cacheDir, "temp.pdf")
+    ),
     loadingContent: @Composable BoxScope.() -> Unit = {},
     maxScale: Float = 5f, //max scale 5f == 5x zoom
     allowPinchToZoom: Boolean = true,

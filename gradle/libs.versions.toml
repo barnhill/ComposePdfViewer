@@ -1,5 +1,8 @@
 [versions]
+cronetApi = "119.6045.31"
+cronetOkhttp = "0.1.0"
 minSdk = "23"
+playServicesCronet = "18.0.1"
 targetSdk = "34"
 androidx-appcompat = "1.6.1"
 androidx-compose-ui = "1.6.0"
@@ -29,8 +32,12 @@ androidx-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "androi
 androidx-compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics", version.ref = "androidx-compose-ui" }
 androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "androidx-compose-ui" }
 androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "androidx-compose-ui" }
+cronet-api = { module = "org.chromium.net:cronet-api", version.ref = "cronetApi" }
+cronet-okhttp = { module = "com.google.net.cronet:cronet-okhttp", version.ref = "cronetOkhttp" }
+okhttp-logging = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
 dokka-gradle = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
+play-services-cronet = { module = "com.google.android.gms:play-services-cronet", version.ref = "playServicesCronet" }
 zoomable = { module = "me.saket.telephoto:zoomable", version.ref = "zoomable" }
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 

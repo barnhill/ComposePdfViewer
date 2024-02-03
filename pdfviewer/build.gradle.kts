@@ -56,6 +56,11 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     implementation(libs.zoomable)
     implementation(libs.okhttp)
+    implementation(libs.okhttp.logging)
+    implementation (libs.play.services.cronet)
+    implementation (libs.cronet.api)
+    implementation (libs.cronet.okhttp)
+
     debugImplementation(libs.androidx.compose.ui.tooling)
 }
 
