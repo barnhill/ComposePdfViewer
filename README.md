@@ -15,14 +15,55 @@ implementation 'com.pnuema.android:pdfviewer:1.0.2'
 implementation("com.pnuema.android:pdfviewer:1.0.2")
 ```
 
-## To Use:
+### Usage:
 
-Retrieve the pdf file from the location it is stored either from a url or from the file system.  Get a reference to the File that points to this file on disk.
+There are two different ways to utilize the composables.  You can either pull a pdf from a url or from a file.  Below are listed the ways to utilize from each source type.
+
+#### File
+
 ```
-val file = getPdfFile() //retrieve pdf file from source (url or file system...etc)
+PdfViewerFromFile(file = file)
 ```
 
-In the Composable that you intend to show the pdf in use the following syntax to utilize the PdfViewer Composable provided by this library to display the PDF.
+#### Url
+
 ```
-PdfViewer(file = file)
+PdfViewerFromUrl(
+    url = "https://example.com/sample.pdf",
+    loadingContent = {
+        Text(
+            modifier = Modifier.align(Alignment.Center),
+            text = "Loading..."
+        )
+    }
+)
 ```
+
+### Optional Parameters
+
+#### PdfViewerFromUrl
+```url: String```
+This is the url from where the pdf will be loaded from.
+
+```fileRetriever: PDFFileRetriever```
+This parameter for the `PdfViewerFromUrl` will allow for custom retrievers to be specified and defined to allow custom retrieval of the pdf file to a target location.  Defaults to the default retriever which utilizes a basic OkHttp client.
+
+```loadingContent: @Composable BoxScope.()```
+This allows for specifying a composable to display during the loading of the pdf from a url.
+
+#### PdfViewerFromFile
+```file: File```
+This is the file which contains the pdf to be displayed.
+
+#### Common
+```maxScale: Float```
+Max zoom scaling factor. Defaults to 5 (500%)
+
+```allowPinchToZoom: Boolean```
+Allow the user to pinch to zoom. Defaults to true.
+
+```backgroundColor: Color```
+Background color to display behind the rendered pdf. Defaults to `Color.White`
+
+```pageDivider: @Composable```
+Composable that will be displayed between each rendered page of the pdf.
