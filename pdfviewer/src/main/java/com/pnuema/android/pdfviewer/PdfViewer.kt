@@ -27,6 +27,7 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.Dispatchers
@@ -42,7 +43,7 @@ import kotlin.math.min
 fun PdfViewerFromUrl(
     modifier: Modifier = Modifier,
     url: String,
-    fileRetriever: PDFFileRetriever,
+    fileRetriever: PDFFileRetriever = DefaultFileRetriever(targetTempFile = File(LocalContext.current.cacheDir, "temp.pdf")),
     loadingContent: @Composable BoxScope.() -> Unit = {},
     maxScale: Float = 5f, //max scale 5f == 5x zoom
     allowPinchToZoom: Boolean = true,
@@ -73,7 +74,6 @@ fun PdfViewerFromUrl(
     } ?: run {
         Box(
             modifier
-                .fillMaxSize()
                 .background(backgroundColor)
         ) {
             loadingContent()

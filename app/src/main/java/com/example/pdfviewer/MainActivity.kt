@@ -28,7 +28,6 @@ class MainActivity : ComponentActivity() {
                 ) {
                     PdfViewerFromUrl(
                         url = "https://raw.githubusercontent.com/barnhill/ComposePdfViewer/main/app/src/main/assets/sample.pdf",
-                        fileRetriever = DefaultFileRetriever(targetTempFile = File(LocalContext.current.cacheDir, "temp.pdf")),
                         loadingContent = {
                             Text(
                                 modifier = Modifier.align(Alignment.Center),
