@@ -46,7 +46,7 @@ PdfViewerFromUrl(
 This is the url from where the pdf will be loaded from.
 
 ```fileRetriever: PDFFileRetriever```
-This parameter for the `PdfViewerFromUrl` will allow for custom retrievers to be specified and defined to allow custom retrieval of the pdf file to a target location.  Defaults to the default retriever which utilizes a basic OkHttp client.
+This parameter for the `PdfViewerFromUrl` will allow for custom retrievers to be specified and defined to allow custom retrieval of the pdf file to a target location.  Defaults to the default retriever which utilizes a basic OkHttp client with Cronet for HTTP/3 and QUIC support.
 
 ```loadingContent: @Composable BoxScope.()```
 This allows for specifying a composable to display during the loading of the pdf from a url.
