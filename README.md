@@ -5,8 +5,7 @@ Android Composable for Viewing PDFs
 The goal of this library is to create and provide an easy to consume Android Composable that will display PDFS.  It will also cache pages generated from the PdfRenderer to prevent re-rendering of the pages for the adjacent pages in the PDF to help performance of scrolling pages.
 
 
-## Usage
-Add the dependency:
+## Add the dependency
 
 ```Gradle
 implementation 'com.pnuema.android:pdfviewer:1.1.0'
@@ -15,19 +14,24 @@ implementation 'com.pnuema.android:pdfviewer:1.1.0'
 implementation("com.pnuema.android:pdfviewer:1.1.0")
 ```
 
-### Usage:
+## Usage
 
 There are two different ways to utilize the composables.  You can either pull a pdf from a url or from a file.  Below are listed the ways to utilize from each source type.
 
-#### File
+### From a File
 
-```
+```kotlin
 PdfViewerFromFile(file = file)
 ```
 
-#### Url
+#### Optional Parameters
 
-```
+```file: File```
+This is the file which contains the pdf to be displayed.
+
+### From a URL
+
+```kotlin
 PdfViewerFromUrl(
     url = "https://example.com/sample.pdf",
     loadingContent = {
@@ -39,9 +43,8 @@ PdfViewerFromUrl(
 )
 ```
 
-### Optional Parameters
+#### Optional Parameters
 
-#### PdfViewerFromUrl
 ```url: String```
 This is the url from where the pdf will be loaded from.
 
@@ -51,11 +54,8 @@ This parameter for the `PdfViewerFromUrl` will allow for custom retrievers to be
 ```loadingContent: @Composable BoxScope.()```
 This allows for specifying a composable to display during the loading of the pdf from a url.
 
-#### PdfViewerFromFile
-```file: File```
-This is the file which contains the pdf to be displayed.
 
-#### Common
+### Common Parameters
 ```maxScale: Float```
 Max zoom scaling factor. Defaults to 5 (500%)
 
@@ -67,3 +67,7 @@ Background color to display behind the rendered pdf. Defaults to `Color.White`
 
 ```pageDivider: @Composable```
 Composable that will be displayed between each rendered page of the pdf.
+
+### Example
+
+There is an example application included in this repo in the app folder.  This will highlight a simple usage of both of the ways to load and display a pdf.
