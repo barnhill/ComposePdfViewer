@@ -42,7 +42,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.6"
+        kotlinCompilerExtensionVersion = "1.5.8"
     }
 }
 
@@ -55,6 +55,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
     implementation(libs.zoomable)
+    implementation(libs.okhttp)
     debugImplementation(libs.androidx.compose.ui.tooling)
 }
 
