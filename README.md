@@ -9,10 +9,10 @@ The goal of this library is to create and provide an easy to consume Android Com
 Add the dependency:
 
 ```Gradle
-implementation 'com.pnuema.android:pdfviewer:1.0.2'
+implementation 'com.pnuema.android:pdfviewer:1.1.0'
 ```
 ```Kotlin(KTS)
-implementation("com.pnuema.android:pdfviewer:1.0.2")
+implementation("com.pnuema.android:pdfviewer:1.1.0")
 ```
 
 ### Usage:
