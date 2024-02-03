@@ -40,7 +40,7 @@ import kotlin.math.max
 import kotlin.math.min
 
 @Composable
-fun PdfViewerFromUrl(
+fun PdfViewer(
     modifier: Modifier = Modifier,
     url: String,
     fileRetriever: PDFFileRetriever = DefaultFileRetriever(
@@ -67,7 +67,7 @@ fun PdfViewerFromUrl(
     }
 
     fileState?.let { file ->
-        PdfViewerFromFile(
+        PdfViewer(
             modifier = modifier,
             file = file,
             maxScale = maxScale,
@@ -85,7 +85,7 @@ fun PdfViewerFromUrl(
 }
 
 @Composable
-fun PdfViewerFromFile(
+fun PdfViewer(
     modifier: Modifier = Modifier,
     file: File,
     maxScale: Float = 5f, //max scale 5f == 5x zoom

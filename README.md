@@ -4,7 +4,6 @@ Android Composable for Viewing PDFs
 
 The goal of this library is to create and provide an easy to consume Android Composable that will display PDFS.  It will also cache pages generated from the PdfRenderer to prevent re-rendering of the pages for the adjacent pages in the PDF to help performance of scrolling pages.
 
-
 ## Add the dependency
 
 ```Gradle
@@ -21,7 +20,7 @@ There are two different ways to utilize the composables.  You can either pull a 
 ### From a File
 
 ```kotlin
-PdfViewerFromFile(file = file)
+PdfViewer(file = file)
 ```
 
 #### Optional Parameters
@@ -32,7 +31,7 @@ This is the file which contains the pdf to be displayed.
 ### From a URL
 
 ```kotlin
-PdfViewerFromUrl(
+PdfViewer(
     url = "https://example.com/sample.pdf",
     loadingContent = {
         Text(
@@ -45,15 +44,19 @@ PdfViewerFromUrl(
 
 #### Optional Parameters
 
+#### PdfViewer - (From Url)
 ```url: String```
 This is the url from where the pdf will be loaded from.
 
 ```fileRetriever: PDFFileRetriever```
-This parameter for the `PdfViewerFromUrl` will allow for custom retrievers to be specified and defined to allow custom retrieval of the pdf file to a target location.  Defaults to the default retriever which utilizes a basic OkHttp client with Cronet for HTTP/3 and QUIC support.
+Allow for custom retrievers to be specified and defined to allow custom retrieval of the pdf file to a target location.  Defaults to the default retriever which utilizes a basic OkHttp client with Cronet for HTTP/3 and QUIC support.
 
 ```loadingContent: @Composable BoxScope.()```
 This allows for specifying a composable to display during the loading of the pdf from a url.
 
+#### PdfViewer - (From File)
+```file: File```
+This is the file which contains the pdf to be displayed.
 
 ### Common Parameters
 ```maxScale: Float```
