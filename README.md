@@ -52,10 +52,6 @@ Allow for custom retrievers to be specified and defined to allow custom retrieva
 ```loadingContent: @Composable BoxScope.()```
 This allows for specifying a composable to display during the loading of the pdf from a url.
 
-#### PdfViewer - (From File)
-```file: File```
-This is the file which contains the pdf to be displayed.
-
 ### Common Parameters
 ```maxScale: Float```
 Max zoom scaling factor. Defaults to 5 (500%)
