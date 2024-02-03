@@ -23,8 +23,6 @@ There are two different ways to utilize the composables.  You can either pull a 
 PdfViewer(file = file)
 ```
 
-#### Optional Parameters
-
 ```file: File```
 This is the file which contains the pdf to be displayed.
 
@@ -41,12 +39,12 @@ PdfViewer(
     }
 )
 ```
-
-#### Optional Parameters
-
-#### PdfViewer - (From Url)
 ```url: String```
 This is the url from where the pdf will be loaded from.
+
+### Optional Parameters
+
+#### PdfViewer - (From Url)
 
 ```fileRetriever: PDFFileRetriever```
 Allow for custom retrievers to be specified and defined to allow custom retrieval of the pdf file to a target location.  Defaults to the default retriever which utilizes a basic OkHttp client with Cronet for HTTP/3 and QUIC support.
