@@ -5,6 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.example.pdfviewer.ui.theme.PdfViewerTheme
@@ -21,7 +23,16 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = Color.LightGray
                 ) {
-                    PdfViewer(file = FileUtil.getTestFile(this))
+                    PdfViewer(
+                        url = "https://raw.githubusercontent.com/barnhill/ComposePdfViewer/main/app/src/main/assets/sample.pdf",
+                        loadingContent = {
+                            Text(
+                                modifier = Modifier.align(Alignment.Center),
+                                text = "Loading..."
+                            )
+                        }
+                    )
+                    /*PdfViewer(file = FileUtil.getTestFile(this))*/
                 }
             }
         }

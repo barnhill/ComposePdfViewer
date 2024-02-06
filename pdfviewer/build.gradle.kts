@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.dokka)
 }
 
-version = "1.0.2"
+version = "1.1.0"
 group = "com.pnuema.android"
 
 android {
@@ -42,7 +42,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.6"
+        kotlinCompilerExtensionVersion = "1.5.8"
     }
 }
 
@@ -55,6 +55,12 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
     implementation(libs.zoomable)
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging)
+    implementation (libs.play.services.cronet)
+    implementation (libs.cronet.api)
+    implementation (libs.cronet.okhttp)
+
     debugImplementation(libs.androidx.compose.ui.tooling)
 }
 

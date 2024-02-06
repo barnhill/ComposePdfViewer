@@ -21,7 +21,7 @@ class PdfBitmapGenerator(file: File) {
     val cache = PdfPageCache()
     val pageCount: Int get() = pdf.pageCount
 
-    private val _pageCacheFlow: MutableSharedFlow<PdfPageCache> = MutableSharedFlow(1)
+    private val _pageCacheFlow: MutableSharedFlow<PdfPageCache> = MutableSharedFlow(0)
     val pageCacheFlow: SharedFlow<PdfPageCache> = _pageCacheFlow.asSharedFlow()
 
     suspend fun getPdfBitmap(pageIndex: Int, size: IntSize) {
