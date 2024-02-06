@@ -1,9 +1,9 @@
 [versions]
+minSdk = "23"
+targetSdk = "34"
 cronetApi = "119.6045.31"
 cronetOkhttp = "0.1.0"
-minSdk = "23"
 playServicesCronet = "18.0.1"
-targetSdk = "34"
 androidx-appcompat = "1.6.1"
 androidx-compose-ui = "1.6.0"
 androidx-material3 = "1.1.2"
@@ -18,7 +18,7 @@ android-gradle-plugin = "8.2.2"
 kotlin = "1.9.22"
 gradleCacheFix = "3.0"
 dokka = "1.9.10"
-vanniktech-maven-publish = "0.25.3"
+vanniktech-maven-publish = "0.27.0"
 zoomable = "0.7.1"
 
 [libraries]

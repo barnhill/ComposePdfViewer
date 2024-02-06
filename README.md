@@ -2,7 +2,7 @@
 
 Android Composable for Viewing PDFs
 
-The goal of this library is to create and provide an easy to consume Android Composable that will display PDFS.  It will also cache pages generated from the PdfRenderer to prevent re-rendering of the pages for the adjacent pages in the PDF to help performance of scrolling pages.
+This library provides an easy to consume Android Composable that will display PDFs.  It caches pages generated from the renderer to prevent re-rendering of the pages for the adjacent pages in the PDF to facilitate performant scrolling pages.  A default optional retriever for web hosted PDFs is provided and is compatible with HTTP 1.1, 2, and 3 (QUIC).
 
 ## Add the dependency
 
@@ -11,6 +11,9 @@ implementation 'com.pnuema.android:pdfviewer:1.1.0'
 ```
 ```Kotlin(KTS)
 implementation("com.pnuema.android:pdfviewer:1.1.0")
+```
+```TOML
+pdfviewer = { module = "com.pnuema.android:pdfviewer", version.ref = "1.1.0" }
 ```
 
 ## Usage
