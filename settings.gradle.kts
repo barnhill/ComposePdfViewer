@@ -28,7 +28,8 @@ gradleEnterprise {
     }
 }
 
-val cacheUrl: String? = if (System.getenv("REMOTE_CACHE_URL") == null) extra["REMOTE_CACHE_URL"] as String else System.getenv("REMOTE_CACHE_URL")
+val remoteCacheFromProperties: String? by extra
+val cacheUrl: String? = if (System.getenv("REMOTE_CACHE_URL") == null) remoteCacheFromProperties else System.getenv("REMOTE_CACHE_URL")
 
 if (cacheUrl != null) {
     buildCache {
@@ -45,9 +46,12 @@ if (cacheUrl != null) {
             if (isEnabled) {
                 println("Using remote build cache: $cacheUrl")
             }
+
+            val remoteCacheUserFromProperties: String? by extra
+            val remoteCachePassFromProperties: String? by extra
             credentials {
-                username = if (System.getenv("REMOTE_CACHE_USER") == null) extra["REMOTE_CACHE_USER"] as String else System.getenv("REMOTE_CACHE_USER")
-                password = if (System.getenv("REMOTE_CACHE_PASS") == null) extra["REMOTE_CACHE_PASS"] as String else System.getenv("REMOTE_CACHE_PASS")
+                username = if (System.getenv("REMOTE_CACHE_USER") == null) remoteCacheUserFromProperties as String else System.getenv("REMOTE_CACHE_USER")
+                password = if (System.getenv("REMOTE_CACHE_PASS") == null) remoteCachePassFromProperties as String else System.getenv("REMOTE_CACHE_PASS")
             }
         }
     }
