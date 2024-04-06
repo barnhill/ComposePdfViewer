@@ -18,9 +18,9 @@ compose-bom = "2024.04.00"
 #plugins
 android-gradle-plugin = "8.3.1"
 kotlin = "1.9.22"
-gradleCacheFix = "3.0"
-dokka = "1.9.10"
-vanniktech-maven-publish = "0.27.0"
+gradleCacheFix = "3.0.1"
+dokka = "1.9.20"
+vanniktech-maven-publish = "0.28.0"
 
 [libraries]
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
