@@ -10,17 +10,17 @@ androidx-material3 = "1.2.1"
 material = "1.12.0"
 androidx-activity = "1.9.0"
 androidx-core = "1.13.1"
-androidx-lifecycle = "2.8.2"
+androidx-lifecycle = "2.8.4"
 okhttp = "4.12.0"
 zoomable = "0.11.2"
 compose-bom = "2024.06.00"
 
 #plugins
-android-gradle-plugin = "8.4.2"
-kotlin = "1.9.24"
+android-gradle-plugin = "8.5.2"
+kotlin = "2.0.10"
 gradleCacheFix = "3.0.1"
 dokka = "1.9.20"
-vanniktech-maven-publish = "0.28.0"
+vanniktech-maven-publish = "0.29.0"
 
 [libraries]
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
@@ -47,3 +47,4 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "vanniktech-maven-publish" }
 gradle-cachefix = { id = "org.gradle.android.cache-fix", version.ref = "gradleCacheFix" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
