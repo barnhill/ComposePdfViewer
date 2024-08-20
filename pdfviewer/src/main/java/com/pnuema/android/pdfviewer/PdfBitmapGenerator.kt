@@ -25,7 +25,7 @@ class PdfBitmapGenerator(file: File) {
     val pageCacheFlow: SharedFlow<PdfPageCache> = _pageCacheFlow.asSharedFlow()
 
     suspend fun getPdfBitmap(pageIndex: Int, size: IntSize) {
-        cache.get(pageIndex.toString()) ?: run {
+        cache.get(pageIndex) ?: run {
             pdf.openPage(pageIndex).use { page ->
                 val widthMultiplier = size.width / page.width
 
@@ -49,7 +49,7 @@ class PdfBitmapGenerator(file: File) {
                         null,
                         PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY
                     )
-                    cache.put(pageIndex.toString(), pdfPageBitmap)
+                    cache.put(pageIndex, pdfPageBitmap)
                 } catch (e: Exception) {
                     Log.e(
                         "PdfViewer",

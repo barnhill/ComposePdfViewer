@@ -12,7 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -52,7 +52,7 @@ fun PdfViewer(
     allowPinchToZoom: Boolean = true,
     backgroundColor: Color = Color.White,
     pageDivider: @Composable BoxScope.() -> Unit = {
-        Divider(
+        HorizontalDivider(
             modifier = Modifier.padding(16.dp),
             color = MaterialTheme.colorScheme.outlineVariant
         )
@@ -92,7 +92,7 @@ fun PdfViewer(
     allowPinchToZoom: Boolean = true,
     backgroundColor: Color = Color.White,
     pageDivider: @Composable BoxScope.() -> Unit = {
-        Divider(
+        HorizontalDivider(
             modifier = Modifier.padding(16.dp),
             color = MaterialTheme.colorScheme.outlineVariant
         )
@@ -140,7 +140,7 @@ fun PdfViewer(
                     if (size.width == 1) return@items
 
                     PdfPageComposable(
-                        bitmap = state.get(pageIndex.toString()),
+                        bitmap = state.get(pageIndex),
                         pageIndex = pageIndex
                     )
 
