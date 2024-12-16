@@ -57,6 +57,7 @@ fun PdfViewer(
             color = MaterialTheme.colorScheme.outlineVariant
         )
     },
+    cachePercent: Double = 0.15
 ) {
     var fileState by remember { mutableStateOf<File?>(null) }
 
@@ -72,7 +73,8 @@ fun PdfViewer(
             file = file,
             maxScale = maxScale,
             allowPinchToZoom = allowPinchToZoom,
-            pageDivider = pageDivider
+            pageDivider = pageDivider,
+            cachePercent = cachePercent
         )
     } ?: run {
         Box(
@@ -97,7 +99,9 @@ fun PdfViewer(
             color = MaterialTheme.colorScheme.outlineVariant
         )
     },
+    cachePercent: Double = 0.15
 ) {
+    val context = LocalContext.current
     val lazyColumnState = rememberLazyListState()
     val zoomState = rememberZoomableState(
         zoomSpec = ZoomSpec(maxZoomFactor = maxScale)
@@ -111,7 +115,7 @@ fun PdfViewer(
                 enabled = allowPinchToZoom,
             ),
     ) {
-        val pdfGenerator: PdfBitmapGenerator by remember { mutableStateOf(PdfBitmapGenerator(file)) }
+        val pdfGenerator: PdfBitmapGenerator by remember { mutableStateOf(PdfBitmapGenerator(file, context, cachePercent)) }
         var size by remember { mutableStateOf(IntSize(1, 1)) }
         val currentVisibleItems = lazyColumnState.currentVisibleItems(pageCount = pdfGenerator.pageCount)
 
