@@ -14,8 +14,7 @@ import java.io.File
 class PdfBitmapGenerator(file: File, context: Context, cachePercent: Double = 0.15) {
     private val pdf = PdfRenderer(
         ParcelFileDescriptor.open(
-            file,
-            ParcelFileDescriptor.MODE_READ_ONLY
+            file, ParcelFileDescriptor.MODE_READ_ONLY
         )
     )
 
@@ -38,17 +37,12 @@ class PdfBitmapGenerator(file: File, context: Context, cachePercent: Double = 0.
                 }
 
                 val pdfPageBitmap = Bitmap.createBitmap(
-                    width,
-                    height,
-                    Bitmap.Config.ARGB_8888
+                    width, height, Bitmap.Config.ARGB_8888
                 )
 
                 try {
                     page.render(
-                        pdfPageBitmap,
-                        null,
-                        null,
-                        PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY
+                        pdfPageBitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY
                     )
                     cache.put(pageIndex, pdfPageBitmap)
                 } catch (e: Exception) {
