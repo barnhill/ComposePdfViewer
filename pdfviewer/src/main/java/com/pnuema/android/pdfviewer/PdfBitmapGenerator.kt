@@ -1,5 +1,6 @@
 package com.pnuema.android.pdfviewer
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.pdf.PdfRenderer
 import android.os.ParcelFileDescriptor
@@ -10,7 +11,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import java.io.File
 
-class PdfBitmapGenerator(file: File) {
+class PdfBitmapGenerator(file: File, context: Context) {
     private val pdf = PdfRenderer(
         ParcelFileDescriptor.open(
             file,
@@ -18,7 +19,7 @@ class PdfBitmapGenerator(file: File) {
         )
     )
 
-    val cache = PdfPageCache()
+    val cache = PdfPageCache(context)
     val pageCount: Int get() = pdf.pageCount
 
     private val _pageCacheFlow: MutableSharedFlow<PdfPageCache> = MutableSharedFlow(0)
@@ -27,10 +28,10 @@ class PdfBitmapGenerator(file: File) {
     suspend fun getPdfBitmap(pageIndex: Int, size: IntSize) {
         cache.get(pageIndex) ?: run {
             pdf.openPage(pageIndex).use { page ->
-                val widthMultiplier = size.width / page.width
+                val widthMultiplier = size.width.toFloat() / page.width.toFloat()
 
-                val width = page.width * widthMultiplier
-                val height = page.height * widthMultiplier
+                val width = (page.width * widthMultiplier).toInt()
+                val height = (page.height * widthMultiplier).toInt()
 
                 if (width <= 0 || height <= 0) {
                     return@run

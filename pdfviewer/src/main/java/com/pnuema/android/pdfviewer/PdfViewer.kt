@@ -98,6 +98,7 @@ fun PdfViewer(
         )
     },
 ) {
+    val context = LocalContext.current
     val lazyColumnState = rememberLazyListState()
     val zoomState = rememberZoomableState(
         zoomSpec = ZoomSpec(maxZoomFactor = maxScale)
@@ -111,7 +112,7 @@ fun PdfViewer(
                 enabled = allowPinchToZoom,
             ),
     ) {
-        val pdfGenerator: PdfBitmapGenerator by remember { mutableStateOf(PdfBitmapGenerator(file)) }
+        val pdfGenerator: PdfBitmapGenerator by remember { mutableStateOf(PdfBitmapGenerator(file, context)) }
         var size by remember { mutableStateOf(IntSize(1, 1)) }
         val currentVisibleItems = lazyColumnState.currentVisibleItems(pageCount = pdfGenerator.pageCount)
 
