@@ -6,7 +6,7 @@ plugins {
     alias(libs.plugins.dokka)
 }
 
-version = "1.2.2"
+version = "1.2.3"
 group = "com.pnuema.android"
 
 android {
@@ -59,7 +59,7 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
 }
 
-val dokkaOutputDir = "${layout.buildDirectory}/dokka"
+val dokkaOutputDir = layout.buildDirectory.dir("dokka")
 tasks {
     val sourcesJar by creating(Jar::class) {
         archiveClassifier.set("sources")
@@ -67,7 +67,7 @@ tasks {
     }
 
     val javadocJar by creating(Jar::class) {
-        dependsOn.add(dokkaJavadoc)
+        dependsOn.add(dokkaGenerate)
         archiveClassifier.set("javadoc")
         from(android.sourceSets.getByName("main").java.srcDirs)
         from(dokkaOutputDir)
@@ -78,16 +78,25 @@ tasks {
         archives(javadocJar)
     }
 
-    dokkaHtml {
-        outputDirectory.set(file(dokkaOutputDir))
-        dokkaSourceSets {
-            named("main") {
-                noAndroidSdkLink.set(false)
+    dokka {
+        moduleName.set("PdfViewer")
+        dokkaPublications.html {
+            suppressInheritedMembers.set(true)
+            failOnWarning.set(true)
+            outputDirectory.set(dokkaOutputDir)
+        }
+        dokkaSourceSets.main {
+            sourceLink {
+                localDirectory.set(file("src/main/kotlin"))
+                remoteUrl("https://github.com/barnhill/ComposePdfViewer")
             }
+        }
+        pluginsConfiguration.html {
+            footerMessage.set("(c) Brad Barnhill")
         }
     }
 
     build {
-        dependsOn(dokkaJavadoc)
+        dependsOn(dokkaGenerate)
     }
 }
