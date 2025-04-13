@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">PdfViewer</string>
+    <string name="app_name" translatable="false">PdfViewer</string>
+
+    <string name="document_long_press_content_description">PDF Options</string>
+    <string name="print_button_label">Print</string>
+    <string name="share_button_label">Share</string>
 </resources>

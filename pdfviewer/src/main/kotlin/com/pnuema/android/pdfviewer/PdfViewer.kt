@@ -16,70 +16,66 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.pnuema.android.pdfviewer.fileretriever.DefaultFileRetriever
+import com.pnuema.android.pdfviewer.fileretriever.PDFFileRetriever
+import com.pnuema.android.pdfviewer.vm.PdfFileStateViewModel
+import com.pnuema.android.pdfviewer.vm.PdfViewerViewModel
 import me.saket.telephoto.zoomable.ZoomSpec
 import me.saket.telephoto.zoomable.rememberZoomableState
 import me.saket.telephoto.zoomable.zoomable
 import java.io.File
-import kotlin.math.max
-import kotlin.math.min
 
 @Composable
 fun PdfViewer(
     modifier: Modifier = Modifier,
     url: String,
-    fileRetriever: PDFFileRetriever = DefaultFileRetriever(
-        context = LocalContext.current,
-        targetTempFile = File(LocalContext.current.cacheDir, "temp.pdf")
-    ),
+    fileRetriever: PDFFileRetriever? = null,
     loadingContent: @Composable BoxScope.() -> Unit = {},
-    maxScale: Float = 5f, //max scale 5f == 5x zoom
-    allowPinchToZoom: Boolean = true,
-    backgroundColor: Color = Color.White,
+    options: PdfOptions = PdfOptions(),
     pageDivider: @Composable BoxScope.() -> Unit = {
         HorizontalDivider(
             modifier = Modifier.padding(16.dp),
             color = MaterialTheme.colorScheme.outlineVariant
         )
     },
-    cachePercent: Double = 0.15
+    onClick: ((Offset) -> Unit)? = null,
+    onLongClick: ((Offset) -> Unit)? = null,
 ) {
-    var fileState by remember { mutableStateOf<File?>(null) }
-
-    LaunchedEffect(key1 = true) {
-        launch(Dispatchers.IO) {
-            fileState = fileRetriever.from(url)
-        }
+    val context = LocalContext.current
+    val viewModel = viewModel<PdfFileStateViewModel>{
+        PdfFileStateViewModel(
+            url = url,
+            retriever = fileRetriever ?: DefaultFileRetriever(context)
+        )
     }
+    val fileState by viewModel.file.collectAsStateWithLifecycle()
 
     fileState?.let { file ->
         PdfViewer(
             modifier = modifier,
             file = file,
-            maxScale = maxScale,
-            allowPinchToZoom = allowPinchToZoom,
+            options = options,
             pageDivider = pageDivider,
-            cachePercent = cachePercent
+            onClick = onClick,
+            onLongClick = onLongClick
         )
     } ?: run {
         Box(
             modifier
-                .background(backgroundColor)
+                .background(options.backgroundColor)
         ) {
             loadingContent()
         }
@@ -90,81 +86,76 @@ fun PdfViewer(
 fun PdfViewer(
     modifier: Modifier = Modifier,
     file: File,
-    maxScale: Float = 5f, //max scale 5f == 5x zoom
-    allowPinchToZoom: Boolean = true,
-    backgroundColor: Color = Color.White,
+    options: PdfOptions = PdfOptions(removeFileWhenFinished = false),
     pageDivider: @Composable BoxScope.() -> Unit = {
         HorizontalDivider(
             modifier = Modifier.padding(16.dp),
             color = MaterialTheme.colorScheme.outlineVariant
         )
     },
-    cachePercent: Double = 0.15
+    onClick: ((Offset) -> Unit)? = null,
+    onLongClick: ((Offset) -> Unit)? = null,
 ) {
     val context = LocalContext.current
+    val viewModel = viewModel<PdfViewerViewModel> {
+        PdfViewerViewModel(
+            context = context,
+            file = file,
+            options = options,
+        )
+    }
+
+    var zoomState = rememberZoomableState(ZoomSpec(maxZoomFactor = options.maxScale))
     val lazyColumnState = rememberLazyListState()
-    val zoomState = rememberZoomableState(
-        zoomSpec = ZoomSpec(maxZoomFactor = maxScale)
+    val pageCount by viewModel.pageCount.collectAsStateWithLifecycle()
+    val currentVisibleItems = lazyColumnState.currentVisibleItems()
+
+    LaunchedEffect(
+        key1 = currentVisibleItems,
+        block = {
+            viewModel.generatePagesForVisibleItems(currentVisibleItems)
+        }
     )
-    Box(
-        modifier
+
+    LazyColumn(
+        modifier = modifier
             .fillMaxSize()
-            .background(backgroundColor)
+            .background(options.backgroundColor)
             .zoomable(
                 state = zoomState,
-                enabled = allowPinchToZoom,
-            ),
-    ) {
-        val pdfGenerator: PdfBitmapGenerator by remember { mutableStateOf(PdfBitmapGenerator(file, context, cachePercent)) }
-        var size by remember { mutableStateOf(IntSize(1, 1)) }
-        val currentVisibleItems = lazyColumnState.currentVisibleItems(pageCount = pdfGenerator.pageCount)
+                enabled = options.allowPinchToZoom,
+                onClick = onClick,
+                onLongClick = onLongClick,
+            )
+            .onGloballyPositioned { coordinates ->
+                viewModel.setSize(coordinates.size)
+            },
+        state = lazyColumnState,
+        content = {
+            items(pageCount) { pageIndex ->
+                PdfPageComposable(
+                    modifier = Modifier,
+                    bitmap = viewModel.getPage(pageIndex),
+                    pageIndex = pageIndex
+                )
 
-        LaunchedEffect(
-            key1 = currentVisibleItems,
-            block = {
-                val lowerPageBound = max(0, currentVisibleItems.first() - 2) // 2 pages prior to first visible or 0
-                val upperPageBound =
-                    min(pdfGenerator.pageCount - 1, currentVisibleItems.last() + 2) // 2 pages after last visible or max page
-
-                for (i in lowerPageBound..upperPageBound) {
-                    pdfGenerator.getPdfBitmap(i, size)
-                }
-            }
-        )
-        val state by pdfGenerator.pageCacheFlow.collectAsState(initial = pdfGenerator.cache)
-        LazyColumn(
-            modifier = Modifier
-                .onGloballyPositioned { coordinates ->
-                    size = coordinates.size
-                }
-                .fillMaxSize(),
-            state = lazyColumnState,
-            content = {
-                items(pdfGenerator.pageCount) { pageIndex ->
-                    if (size.width == 1) return@items
-
-                    PdfPageComposable(
-                        bitmap = state.get(pageIndex),
-                        pageIndex = pageIndex
-                    )
-
+                Box(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
                     pageDivider()
                 }
             }
-        )
-    }
+        }
+    )
 }
 
 @Composable
-private fun LazyListState.currentVisibleItems(pageCount: Int): List<Int> {
-    return remember(this) {
-        derivedStateOf {
-            when (layoutInfo.visibleItemsInfo.count()) {
-                pageCount -> listOf(0)
-                0 -> listOf(0)
-                else -> {
-                    layoutInfo.visibleItemsInfo.map { it.index }
-                }
+private fun LazyListState.currentVisibleItems(): List<Int> = rememberSaveable(this) {
+    derivedStateOf {
+        when (layoutInfo.visibleItemsInfo.count()) {
+            0 -> listOf(0)
+            else -> {
+                layoutInfo.visibleItemsInfo.map { it.index }
             }
         }
     }.value
@@ -172,17 +163,18 @@ private fun LazyListState.currentVisibleItems(pageCount: Int): List<Int> {
 
 @Composable
 private fun PdfPageComposable(
+    modifier: Modifier = Modifier,
     bitmap: Bitmap?,
     pageIndex: Int
 ) {
     if (bitmap != null) {
         Image(
-            modifier = Modifier
+            modifier = modifier
                 .aspectRatio(1f)
                 .clipToBounds()
                 .fillMaxWidth(),
             bitmap = bitmap.asImageBitmap(),
-            contentDescription = "Page $pageIndex"
+            contentDescription = stringResource(R.string.document_page_content_description, pageIndex)
         )
     }
 }

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="document_long_press_content_description">Options PDF</string>
+    <string name="print_button_label">Imprimer</string>
+    <string name="share_button_label">Partager</string>
+</resources>

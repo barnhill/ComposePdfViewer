@@ -7,13 +7,13 @@ This library provides an easy to consume Android Composable that will display PD
 ## Add the dependency
 
 ```Gradle
-implementation 'com.pnuema.android:pdfviewer:1.2.3'
+implementation 'com.pnuema.android:pdfviewer:1.3.0'
 ```
 ```Kotlin(KTS)
-implementation("com.pnuema.android:pdfviewer:1.2.3")
+implementation("com.pnuema.android:pdfviewer:1.3.0")
 ```
 ```TOML
-pdfviewer = { module = "com.pnuema.android:pdfviewer", version.ref = "1.2.3" }
+pdfviewer = { module = "com.pnuema.android:pdfviewer", version.ref = "1.3.0" }
 ```
 
 ## Usage
@@ -67,6 +67,9 @@ Background color to display behind the rendered pdf. Defaults to `Color.White`
 
 ```pageDivider: @Composable```
 Composable that will be displayed between each rendered page of the pdf.
+
+```enableActions: Boolean```
+Enable long pressing the document to show pdf actions such as print document
 
 ### Example
 
