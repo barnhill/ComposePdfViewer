@@ -55,7 +55,19 @@ Allow for custom retrievers to be specified and defined to allow custom retrieva
 ```loadingContent: @Composable BoxScope.()```
 This allows for specifying a composable to display during the loading of the pdf from a url.
 
-### Common Parameters
+```options: PdfOptions```
+Configurable options for controlling how the pdf is viewed, and what actions are available
+
+```pageDivider: @Composable```
+Composable that will be displayed between each rendered page of the pdf.
+
+```onClick: ((Offset) -> Unit)?```
+Call back for single clicking on the pdf
+
+```onLongClick: ((Offset) -> Unit)?```
+Callback for long clicking on the pdf
+
+### PdfOptions Parameters
 ```maxScale: Float```
 Max zoom scaling factor. Defaults to 5 (500%)
 
@@ -65,11 +77,15 @@ Allow the user to pinch to zoom. Defaults to true.
 ```backgroundColor: Color```
 Background color to display behind the rendered pdf. Defaults to `Color.White`
 
-```pageDivider: @Composable```
-Composable that will be displayed between each rendered page of the pdf.
+```allowPrinting: Boolean```
+Enables the printing functionality that is accessible through `options.print()`. Default: true
 
-```enableActions: Boolean```
-Enable long pressing the document to show pdf actions such as print document
+```allowSharing: Boolean```
+Enables the sharing functionality that is accessible through `options.share()`. Default: true
+
+```removeFileWhenFinished: Boolean```
+Removes the downloaded file after the composable falls out of scope or the file passed into the 
+composable if this is set to true. Default: true
 
 ### Example
 
