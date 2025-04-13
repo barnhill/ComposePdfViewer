@@ -2,7 +2,7 @@
 
 Android Composable for Viewing PDFs
 
-This library provides an easy to consume Android Composable that will display PDFs.  It caches pages generated from the renderer to prevent re-rendering of the pages for the adjacent pages in the PDF to facilitate performant scrolling pages.  A default optional retriever for web hosted PDFs is provided and is compatible with HTTP 1.1, 2, and 3 (QUIC).
+This library provides an easy to consume Android Composable that will display PDFs.  It caches pages generated from the renderer to prevent re-rendering of the pages for the adjacent pages in the PDF to facilitate performant scrolling pages.  A default optional retriever for web hosted PDFs is provided and uses OKHttp and is compatible with HTTP 1.1, 2.
 
 ## Add the dependency
 
