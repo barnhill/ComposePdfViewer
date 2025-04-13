@@ -32,8 +32,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.pdfviewer.ui.theme.PdfViewerTheme
 import com.pnuema.android.pdfviewer.PdfViewer
-import kotlinx.coroutines.launch
 import com.pnuema.android.pdfviewer.rememberPdfOptions
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)

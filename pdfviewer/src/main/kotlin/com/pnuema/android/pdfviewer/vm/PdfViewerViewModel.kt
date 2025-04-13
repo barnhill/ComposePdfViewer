@@ -1,14 +1,15 @@
 package com.pnuema.android.pdfviewer.vm
 
-import com.pnuema.android.pdfviewer.PdfOptions
 import android.content.Context
 import android.graphics.Bitmap
 import androidx.compose.ui.unit.IntSize
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.pnuema.android.pdfviewer.PdfOptions
 import com.pnuema.android.pdfviewer.actions.PdfAction
 import com.pnuema.android.pdfviewer.actions.PdfActionUtil
 import com.pnuema.android.pdfviewer.generator.PdfBitmapGenerator
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -26,7 +27,7 @@ class PdfViewerViewModel(
 
     private var pageSize = IntSize(1, 1)
 
-    val pdfGenerator = PdfBitmapGenerator(file)
+    lateinit var pdfGenerator: PdfBitmapGenerator
 
     init {
         viewModelScope.launch {
@@ -36,10 +37,13 @@ class PdfViewerViewModel(
         }
     }
 
+    fun isInited(): Boolean = ::pdfGenerator.isInitialized
+
     fun setSize(size: IntSize) {
         pageSize = size
 
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.Default) {
+            pdfGenerator = PdfBitmapGenerator(file)
             _pageCount.emit(pdfGenerator.pageCount)
         }
     }

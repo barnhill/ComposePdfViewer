@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -26,7 +25,6 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.pnuema.android.pdfviewer.fileretriever.DefaultFileRetriever
@@ -45,9 +43,8 @@ fun PdfViewer(
     fileRetriever: PDFFileRetriever? = null,
     loadingContent: @Composable BoxScope.() -> Unit = {},
     options: PdfOptions = PdfOptions(),
-    pageDivider: @Composable BoxScope.() -> Unit = {
+    pageDivider: @Composable (BoxScope.() -> Unit)? = {
         HorizontalDivider(
-            modifier = Modifier.padding(16.dp),
             color = MaterialTheme.colorScheme.outlineVariant
         )
     },
@@ -87,9 +84,8 @@ fun PdfViewer(
     modifier: Modifier = Modifier,
     file: File,
     options: PdfOptions = PdfOptions(removeFileWhenFinished = false),
-    pageDivider: @Composable BoxScope.() -> Unit = {
+    pageDivider: @Composable (BoxScope.() -> Unit)? = {
         HorizontalDivider(
-            modifier = Modifier.padding(16.dp),
             color = MaterialTheme.colorScheme.outlineVariant
         )
     },
@@ -111,9 +107,11 @@ fun PdfViewer(
     val currentVisibleItems = lazyColumnState.currentVisibleItems()
 
     LaunchedEffect(
-        key1 = currentVisibleItems,
+        key1 = currentVisibleItems + viewModel.isInited(),
         block = {
-            viewModel.generatePagesForVisibleItems(currentVisibleItems)
+            if (viewModel.isInited()) {
+                viewModel.generatePagesForVisibleItems(currentVisibleItems)
+            }
         }
     )
 
@@ -142,7 +140,7 @@ fun PdfViewer(
                 Box(
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    pageDivider()
+                    pageDivider?.invoke(this)
                 }
             }
         }
