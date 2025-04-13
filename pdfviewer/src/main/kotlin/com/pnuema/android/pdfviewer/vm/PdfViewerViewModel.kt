@@ -12,6 +12,7 @@ import com.pnuema.android.pdfviewer.generator.PdfBitmapGenerator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.File
 import kotlin.math.max
@@ -25,30 +26,40 @@ class PdfViewerViewModel(
     private val _pageCount = MutableStateFlow<Int>(0)
     val pageCount = _pageCount.asStateFlow()
 
+    private val _initFinished = MutableStateFlow<Boolean>(false)
+    val initFinished = _initFinished.asStateFlow()
+
     private var pageSize = IntSize(1, 1)
 
     lateinit var pdfGenerator: PdfBitmapGenerator
 
     init {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.Default) {
             options.action.collect {
                 handleAction(context, it)
             }
         }
     }
 
-    fun isInited(): Boolean = ::pdfGenerator.isInitialized
-
+    /**
+     * Set the page size and init the generator, then emit the page count to start populating
+     * the list of pages
+     */
     fun setSize(size: IntSize) {
         pageSize = size
 
         viewModelScope.launch(Dispatchers.Default) {
-            pdfGenerator = PdfBitmapGenerator(file)
+            if (!::pdfGenerator.isInitialized) {
+                pdfGenerator = PdfBitmapGenerator(file)
+                _initFinished.update { true }
+            }
             _pageCount.emit(pdfGenerator.pageCount)
         }
     }
 
     fun generatePagesForVisibleItems(pages: List<Int>, size: IntSize = pageSize) {
+        if (!::pdfGenerator.isInitialized) return
+
         // 2 pages prior to first visible or 0
         val lowerPageBound = max(0, pages.first() - 2)
 
@@ -65,6 +76,7 @@ class PdfViewerViewModel(
     private fun handleAction(context: Context, action: PdfAction?) {
         when (action) {
             PdfAction.Print -> {
+                if (!::pdfGenerator.isInitialized) return
                 PdfActionUtil.print(
                     context = context,
                     pdfGenerator = pdfGenerator,
@@ -84,7 +96,9 @@ class PdfViewerViewModel(
 
     override fun onCleared() {
         // release file descriptor in pdf generator
-        pdfGenerator.close()
+        if (::pdfGenerator.isInitialized) {
+            pdfGenerator.close()
+        }
 
         // clean up temp file if needed
         if (options.removeFileWhenFinished) {

@@ -22,7 +22,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
@@ -61,8 +60,14 @@ class MainActivity : ComponentActivity() {
                             options = pdfOptions,
                             loadingContent = {
                                 Text(
-                                    modifier = Modifier.align(Alignment.Center),
-                                    text = "Loading..."
+                                    text = "Loading...",
+                                    color = Color.Black
+                                )
+                            },
+                            fetchFailedContent = {
+                                Text(
+                                    text = "Failed to fetch from url",
+                                    color = Color.Black
                                 )
                             },
                             onLongClick = {

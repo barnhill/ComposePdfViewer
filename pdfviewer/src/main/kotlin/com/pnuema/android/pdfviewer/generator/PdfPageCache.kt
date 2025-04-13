@@ -16,7 +16,9 @@ internal class PdfPageCache() {
     }
 
     fun put(page: Int, bitmap: Bitmap) {
-        memoryCache.put(page, bitmap)
+        synchronized(memoryCache) {
+            memoryCache.put(page, bitmap)
+        }
     }
 
     fun get(page: Int): Bitmap? = memoryCache[page] ?: run {

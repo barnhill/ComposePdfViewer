@@ -55,6 +55,9 @@ Allow for custom retrievers to be specified and defined to allow custom retrieva
 ```loadingContent: @Composable BoxScope.()```
 This allows for specifying a composable to display during the loading of the pdf from a url.
 
+```fetchFailedContent: @Composable BoxScope.()```
+This allows for specifying a composable to display if the retrieval of the pdf from the url fails.
+
 ```options: PdfOptions```
 Configurable options for controlling how the pdf is viewed, and what actions are available
 

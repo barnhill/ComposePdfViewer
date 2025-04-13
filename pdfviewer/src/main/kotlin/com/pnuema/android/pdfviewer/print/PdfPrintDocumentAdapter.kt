@@ -94,7 +94,7 @@ class PdfPrintDocumentAdapter(
                 }
             }
 
-            Log.i("PdfViewer", "Printed image generation time: ${time}ms")
+            Log.d("PdfViewer", "Printed image generation time: ${time}ms")
 
             // Write PDF document to file
             try {

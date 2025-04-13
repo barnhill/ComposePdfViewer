@@ -9,6 +9,7 @@ import androidx.compose.ui.unit.IntSize
 import androidx.core.graphics.createBitmap
 import java.io.Closeable
 import java.io.File
+import kotlin.system.measureTimeMillis
 
 class PdfBitmapGenerator @WorkerThread constructor(file: File): Closeable {
     private val cache = PdfPageCache()
@@ -19,6 +20,10 @@ class PdfBitmapGenerator @WorkerThread constructor(file: File): Closeable {
         )
     )
     val pageCount: Int get() = pdf.pageCount
+
+    init {
+        Log.d("PdfViewer", "Generator created")
+    }
 
     fun getPdfBitmap(pageIndex: Int, size: IntSize): Bitmap? = cache.get(pageIndex) ?: run {
         return@run generatePageBitmap(pageIndex, size)?.also {
@@ -39,18 +44,12 @@ class PdfBitmapGenerator @WorkerThread constructor(file: File): Closeable {
         val pdfPageBitmap = createBitmap(width, height)
 
         try {
-            it.render(
-                pdfPageBitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_PRINT
-            )
-            Log.i(
-                "PdfViewer",
-                "Generated page {$pageIndex}"
-            )
+            val time = measureTimeMillis {
+                it.render(pdfPageBitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_PRINT)
+            }
+            Log.d("PdfViewer", "Generated page $pageIndex in ${time}ms")
         } catch (e: Exception) {
-            Log.e(
-                "PdfViewer",
-                "Generating failed for page {$pageIndex} :${e.message}"
-            )
+            Log.e("PdfViewer", "Generating failed for page {$pageIndex} :${e.message}")
         }
 
         pdfPageBitmap

@@ -23,9 +23,11 @@ class DefaultFileRetriever(context: Context): PDFFileRetriever {
                     maxSize = 10L * 1024L * 1024L // 10 MiB
                 )
             )
-            .addInterceptor(HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BASIC
-            })
+            .addInterceptor(
+                HttpLoggingInterceptor().apply {
+                    level = HttpLoggingInterceptor.Level.HEADERS
+                }
+            )
             .addInterceptor(BrotliInterceptor)
             .build()
     }
@@ -33,16 +35,20 @@ class DefaultFileRetriever(context: Context): PDFFileRetriever {
     override suspend fun from(source: String): File? {
         val request: Request = Request.Builder().url(source).build()
         return client.newCall(request).execute().use { response ->
-            response.body?.byteStream()?.let { body ->
-                body.source().use { input ->
-                    targetTempFile.sink().use {
-                        it.buffer().use { sink ->
-                            sink.writeAll(input)
-                            sink.flush()
+            if (response.isSuccessful) {
+                response.body?.byteStream()?.let { body ->
+                    body.source().use { input ->
+                        targetTempFile.sink().use {
+                            it.buffer().use { sink ->
+                                sink.writeAll(input)
+                                sink.flush()
+                            }
                         }
                     }
+                    targetTempFile
                 }
-                targetTempFile
+            } else {
+                null
             }
         }
     }
