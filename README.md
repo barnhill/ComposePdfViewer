@@ -7,13 +7,13 @@ This library provides an easy to consume Android Composable that will display PD
 ## Add the dependency
 
 ```Gradle
-implementation 'com.pnuema.android:pdfviewer:1.3.0'
+implementation 'com.pnuema.android:pdfviewer:1.3.1'
 ```
 ```Kotlin(KTS)
-implementation("com.pnuema.android:pdfviewer:1.3.0")
+implementation("com.pnuema.android:pdfviewer:1.3.1")
 ```
 ```TOML
-pdfviewer = { module = "com.pnuema.android:pdfviewer", version.ref = "1.3.0" }
+pdfviewer = { module = "com.pnuema.android:pdfviewer", version.ref = "1.3.1" }
 ```
 
 ## Usage
