@@ -1,6 +1,9 @@
 package com.pnuema.android.pdfviewer
 
 import android.graphics.Bitmap
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -15,7 +18,6 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -25,7 +27,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
@@ -53,12 +54,7 @@ fun PdfViewer(
             color = MaterialTheme.colorScheme.outline
         )
     },
-    fetchFailedContent: @Composable (BoxScope.() -> Unit)? = {
-        Text(
-            text = "Failed to load",
-            color = Color.Black
-        )
-    },
+    fetchFailedContent: @Composable (BoxScope.() -> Unit)? = {},
     onClick: ((Offset) -> Unit)? = null,
     onLongClick: ((Offset) -> Unit)? = null,
 ) {
@@ -111,38 +107,41 @@ fun PdfViewer(
     onClick: ((Offset) -> Unit)? = null,
     onLongClick: ((Offset) -> Unit)? = null,
 ) {
-    file?.let {
-        val context = LocalContext.current
-        val viewModel = viewModel<PdfViewerViewModel> {
-            PdfViewerViewModel(
-                context = context,
-                file = file,
-                options = options,
-            )
-        }
-
-        val initFinished by viewModel.initFinished.collectAsStateWithLifecycle()
-
-        var zoomState = rememberZoomableState(ZoomSpec(maxZoomFactor = options.maxScale))
-        val lazyColumnState = rememberLazyListState()
-        val pageCount by viewModel.pageCount.collectAsStateWithLifecycle()
-        val currentVisibleItems = lazyColumnState.currentVisibleItems()
-
-        LaunchedEffect(
-            key1 = currentVisibleItems + initFinished,
-            block = {
-                if (initFinished) {
-                    viewModel.generatePagesForVisibleItems(currentVisibleItems)
-                }
+    // pdf viewer content
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(options.backgroundColor),
+        contentAlignment = Alignment.Center
+    ) {
+        file?.let {
+            val context = LocalContext.current
+            val viewModel = viewModel<PdfViewerViewModel> {
+                PdfViewerViewModel(
+                    context = context,
+                    file = file,
+                    options = options,
+                )
             }
-        )
-        Box(
-            modifier = modifier
-                .background(options.backgroundColor),
-            contentAlignment = Alignment.Center
-        ) {
+
+            val initFinished by viewModel.initFinished.collectAsStateWithLifecycle()
+            var zoomState = rememberZoomableState(ZoomSpec(maxZoomFactor = options.maxScale))
+            val lazyColumnState = rememberLazyListState()
+            val pageCount by viewModel.pageCount.collectAsStateWithLifecycle()
+            val currentVisibleItems = lazyColumnState.currentVisibleItems()
+
+            LaunchedEffect(
+                key1 = currentVisibleItems,
+                key2 = initFinished,
+                block = {
+                    if (initFinished) {
+                        viewModel.generatePagesForVisibleItems(currentVisibleItems)
+                    }
+                }
+            )
+
             LazyColumn(
-                modifier = modifier
+                modifier = Modifier
                     .fillMaxSize()
                     .background(options.backgroundColor)
                     .zoomable(
@@ -156,7 +155,7 @@ fun PdfViewer(
                     },
                 state = lazyColumnState,
                 verticalArrangement = if (pageDivider == null)
-                    // no divider so add all spacing between the pages
+                // no divider so add all spacing between the pages
                     Arrangement.spacedBy(options.spacingBetweenPages)
                 else
                     Arrangement.Top
@@ -181,16 +180,21 @@ fun PdfViewer(
                 }
             }
 
-            if (!initFinished) {
+            // loading content is shown while the pdf generator is initializing / opening file
+            AnimatedVisibility(
+                visible = !initFinished,
+                enter = fadeIn(),
+                exit = fadeOut()
+            ) {
                 loadingContent()
             }
         }
 
-    }  ?: run {
-        Box(
-            modifier = modifier
-                .background(options.backgroundColor),
-            contentAlignment = Alignment.Center
+        // loading content shown while file is null
+        AnimatedVisibility(
+            visible = file == null,
+            enter = fadeIn(),
+            exit = fadeOut()
         ) {
             loadingContent()
         }
