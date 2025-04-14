@@ -1,6 +1,5 @@
 package com.pnuema.android.pdfviewer
 import android.os.Parcelable
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -77,7 +76,7 @@ fun rememberPdfOptions(
     allowPrinting: Boolean = true,
     allowSharing: Boolean = true,
     removeFileWhenFinished: Boolean = true,
-    backgroundColor: Color = MaterialTheme.colorScheme.background,
+    backgroundColor: Color = Color.White,
 ): PdfOptions = rememberSaveable(saver = PdfOptions.Saver) {
     PdfOptions(
         maxScale = maxScale,
