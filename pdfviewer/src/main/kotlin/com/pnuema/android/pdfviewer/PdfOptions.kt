@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.parcelize.Parcelize
-import kotlinx.parcelize.RawValue
 
 data class PdfOptions(
     val maxScale: Float = 5f,
@@ -51,7 +50,7 @@ data class PdfOptions(
                     allowSharing = state.allowSharing,
                     removeFileWhenFinished = state.removeFileWhenFinished,
                     backgroundColor = state.backgroundColor.value,
-                    spacingBetweenPages = state.spacingBetweenPages
+                    spacingBetweenPages = state.spacingBetweenPages.value
                 )
             },
             restore = { saved ->
@@ -62,7 +61,7 @@ data class PdfOptions(
                     allowSharing = saved.allowSharing,
                     removeFileWhenFinished = saved.removeFileWhenFinished,
                     backgroundColor = Color(saved.backgroundColor),
-                    spacingBetweenPages = saved.spacingBetweenPages
+                    spacingBetweenPages = saved.spacingBetweenPages.dp
                 )
             },
         )
@@ -96,5 +95,5 @@ data class PdfOptionsSavedState(
     val allowSharing: Boolean,
     val removeFileWhenFinished: Boolean,
     val backgroundColor: ULong,
-    val spacingBetweenPages: @RawValue Dp
+    val spacingBetweenPages: Float
     ) : Parcelable
