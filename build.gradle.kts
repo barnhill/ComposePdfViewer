@@ -15,7 +15,7 @@ plugins {
 
 tasks {
     wrapper {
-        gradleVersion = "8.13"
+        gradleVersion = libs.versions.gradle.get()
         distributionType = Wrapper.DistributionType.BIN
     }
 }

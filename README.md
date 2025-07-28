@@ -1,4 +1,4 @@
-# ComposePdfViewer [![Android CI](https://github.com/barnhill/ComposePdfViewer/actions/workflows/android.yml/badge.svg)](https://github.com/barnhill/ComposePdfViewer/actions/workflows/android.yml) [![API](https://img.shields.io/badge/API-19%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=23)
+# ComposePdfViewer [![Android CI](https://github.com/barnhill/ComposePdfViewer/actions/workflows/android.yml/badge.svg)](https://github.com/barnhill/ComposePdfViewer/actions/workflows/android.yml) [![API](https://img.shields.io/badge/API-24%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=24)
 
 Android Composable for Viewing PDFs
 
@@ -7,13 +7,13 @@ This library provides an easy to consume Android Composable that will display PD
 ## Add the dependency
 
 ```Gradle
-implementation 'com.pnuema.android:pdfviewer:1.3.4'
+implementation 'com.pnuema.android:pdfviewer:1.4.0'
 ```
 ```Kotlin(KTS)
-implementation("com.pnuema.android:pdfviewer:1.3.4")
+implementation("com.pnuema.android:pdfviewer:1.4.0")
 ```
 ```TOML
-pdfviewer = { module = "com.pnuema.android:pdfviewer", version.ref = "1.3.4" }
+pdfviewer = { module = "com.pnuema.android:pdfviewer", version.ref = "1.4.0" }
 ```
 
 ## Usage
