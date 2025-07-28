@@ -7,9 +7,9 @@ plugins {
     id("kotlin-parcelize")
 }
 
-version = project.properties["VERSION_NAME"].toString()
+val gitVersionName: String by rootProject.extra
+version = gitVersionName
 group = project.properties["GROUP"].toString()
-
 android {
     namespace = "com.pnuema.android.pdfviewer"
     base.archivesName.set("compose-pdf-viewer")
@@ -24,13 +24,17 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
+            isShrinkResources = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            enableUnitTestCoverage = false
         }
         debug {
             isMinifyEnabled = false
+            isShrinkResources = false
+            enableUnitTestCoverage = true
         }
     }
     compileOptions {
@@ -57,6 +61,12 @@ dependencies {
     implementation(libs.okhttp.logging)
 
     debugImplementation(libs.androidx.compose.ui.tooling)
+}
+
+tasks.register("version") {
+    doFirst {
+        println("Version Name: $gitVersionName")
+    }
 }
 
 val dokkaOutputDir = layout.buildDirectory.dir("dokka")
@@ -98,5 +108,9 @@ tasks {
 
     build {
         dependsOn(dokkaGenerate)
+    }
+
+    preBuild {
+        dependsOn("version")
     }
 }
