@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<network-security-config>
-    <debug-overrides>
+<network-security-config xmlns:tools="http://schemas.android.com/tools">
+    <debug-overrides tools:ignore="NetworkSecurityConfig">
         <trust-anchors>
             <certificates src="system" />
             <certificates src="user" />
