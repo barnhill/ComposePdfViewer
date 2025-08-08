@@ -77,8 +77,9 @@ class PdfPrintDocumentAdapter(
                         doc.startPage(i).also { page ->
 
                             // check for cancellation
-                            if (cancellationSignal.isCanceled == true) {
+                            if (cancellationSignal.isCanceled) {
                                 callback.onWriteCancelled()
+                                doc.finishPage(page)
                                 doc.close()
                                 pdfDocument = null
                                 return@launch
